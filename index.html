@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вячеслав · Цифровые услуги</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #050510;
+      color: #ffffff;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .math-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.2;
+    }
+    .spiral-symbols {
+      position: absolute;
+      width: 100%; height: 100%;
+      background: repeating-conic-gradient(from 0deg, transparent 0deg 15deg, rgba(0, 242, 254, 0.05) 15deg 30deg);
+      mask-image: radial-gradient(circle, black 20%, transparent 70%);
+      animation: spin 40s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 20px 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* БЕГУЩАЯ СТРОКА */
+    .ticker {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      color: #b0b0c0;
+      padding: 10px 0;
+      font-size: 14px;
+      letter-spacing: 1px;
+      overflow: hidden;
+      border-radius: 40px;
+      margin-bottom: 40px;
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.05);
+    }
+    .ticker-track {
+      display: inline-block;
+      white-space: nowrap;
+      animation: ticker 22s linear infinite;
+      padding-left: 100%;
+    }
+    .ticker-track span { margin: 0 30px; text-transform: uppercase; }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* ШАПКА */
+    .hero {
+      text-align: center;
+      padding: 30px 0 20px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 300;
+      background: linear-gradient(to right, #00f2fe, #4facfe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: #b0b0c0;
+      border-top: 1px solid rgba(0, 242, 254, 0.2);
+      display: inline-block;
+      padding-top: 12px;
+    }
+
+    /* КАРТОЧКИ */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin: 40px 0 30px;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(0, 242, 254, 0.2);
+      border-radius: 20px;
+      padding: 24px 20px 28px;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: #00f2fe;
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.15);
+    }
+    .card h3 {
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #00f2fe;
+    }
+    .card p { color: #ccc; font-size: 0.95rem; }
+    .emoji-big { font-size: 2.5rem; display: block; margin-bottom: 12px; }
+
+    /* КНОПКИ СВЯЗИ */
+    .btn-wrap {
+      text-align: center;
+      margin: 30px 0 36px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-neon {
+      display: inline-block;
+      padding: 16px 40px;
+      background: transparent;
+      color: #00f2fe;
+      border: 2px solid #00f2fe;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.15), inset 0 0 10px rgba(0, 242, 254, 0.1);
+    }
+    .btn-neon:hover {
+      background: #00f2fe;
+      color: #050510;
+      box-shadow: 0 0 30px #00f2fe, 0 0 60px #00f2fe;
+      transform: scale(1.05);
+    }
+
+    /* О СЕБЕ */
+    .about {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(6px);
+      border-radius: 30px;
+      padding: 28px 32px;
+      margin: 36px 0 30px;
+      border: 1px solid rgba(0, 242, 254, 0.15);
+    }
+    .about h2 { font-size: 1.8rem; font-weight: 400; color: #00f2fe; margin-bottom: 6px; }
+    .about p { color: #b0b0c0; max-width: 780px; line-height: 1.6; }
+
+    /* ПОДВАЛ */
+    .footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #5d6a7a;
+      margin-top: 28px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding-top: 24px;
+    }
+
+    /* 🪟 МОДАЛЬНОЕ ОКНО */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(5, 5, 16, 0.85);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active { display: flex; opacity: 1; }
+    .modal {
+      background: linear-gradient(135deg, #0f1a2e, #141d2b);
+      border: 1px solid rgba(0, 242, 254, 0.4);
+      border-radius: 24px;
+      padding: 36px 32px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 0 60px rgba(0, 242, 254, 0.2);
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    .modal-overlay.active .modal { transform: scale(1); }
+    .modal h3 { font-size: 1.6rem; color: #00f2fe; margin-bottom: 16px; font-weight: 500; }
+    .modal p { color: #b0b0c0; margin-bottom: 12px; line-height: 1.7; font-size: 0.95rem;}
+    .modal .price-line { color: #00f2fe; font-size: 1.2rem; font-weight: 600; margin: 16px 0; }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 20px;
+      background: transparent; border: none;
+      color: #4facfe; font-size: 2rem;
+      cursor: pointer; line-height: 1;
+      transition: 0.2s;
+    }
+    .modal-close:hover { color: #00f2fe; transform: scale(1.2); }
+    .modal-btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 12px 32px;
+      background: #00f2fe;
+      color: #050510;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .modal-btn:hover { background: #4facfe; box-shadow: 0 0 25px #00f2fe; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.2rem; }
+      .btn-neon { padding: 14px 28px; font-size: 1rem; }
+      .grid { gap: 18px; }
+      .about { padding: 20px; }
+      .modal { padding: 28px 22px; }
+      .modal h3 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="math-bg">
+    <div class="spiral-symbols"></div>
+  </div>
+
+  <div class="container">
+
+    <!-- Бегущая строка -->
+    <div class="ticker">
+      <div class="ticker-track">
+        <span>✨ Цифровые визитки и сайты-каталоги</span>
+        <span>🤖 Боты для записи и приёма заявок</span>
+        <span>📄 Обработка Word, Excel, PDF</span>
+        <span>⚡ Автоматизация рутинных задач</span>
+        <span>✨ Цифровые визитки и сайты-каталоги</span>
+        <span>🤖 Боты для записи и приёма заявок</span>
+        <span>📄 Обработка Word, Excel, PDF</span>
+        <span>⚡ Автоматизация рутинных задач</span>
+      </div>
+    </div>
+
+    <!-- Шапка -->
+    <div class="hero">
+      <h1>Вячеслав</h1>
+      <p>Работа проще и быстрее</p>
+    </div>
+
+    <!-- Карточки услуг -->
+    <div class="grid">
+      <div class="card" data-modal="modal-sites">
+        <span class="emoji-big">💻</span>
+        <h3>Сайты и визитки</h3>
+        <p>Цифровые визитки с записью и сайты-каталоги для магазинов.</p>
+      </div>
+      <div class="card" data-modal="modal-docs">
+        <span class="emoji-big">📄</span>
+        <h3>Документы</h3>
+        <p>Сбор данных из Word/Excel в таблицы. Отчёты, договоры, PDF.</p>
+      </div>
+      <div class="card" data-modal="modal-bots">
+        <span class="emoji-big">🤖</span>
+        <h3>Боты и автоматизация</h3>
+        <p>Telegram-боты для записи. Скрипты для рутины и рассылок.</p>
+      </div>
+      <div class="card" data-modal="modal-text">
+        <span class="emoji-big">📝</span>
+        <h3>Тексты</h3>
+        <p>Продающие тексты для Авито и сайтов. Редактирование, переводы.</p>
+      </div>
+    </div>
+
+    <!-- Кнопки связи -->
+    <div class="btn-wrap">
+      <a href="https://max.ru/u/f9LHodD0cOILwLMoH68Wi1RdV8d32FBcXRPqvPwLsiGJNh9b6kCk85p-aoc" class="btn-neon" target="_blank">📩 Написать в MAX</a>
+      <a href="https://t.me/skrip_48" class="btn-neon" target="_blank">✈️ Написать в Telegram</a>
+    </div>
+
+    <!-- О себе -->
+    <div class="about">
+      <h2>Немного обо мне</h2>
+      <p>
+        Занимаюсь созданием сайтов, обработкой документов и автоматизацией. Работаю с малым бизнесом и частными специалистами. Всё делаю под ключ — вам не нужно разбираться в технических тонкостях
+      </p>
+      <p style="margin-top: 8px; font-size: 0.95rem; color: #6a7f9a;">
+        📍 Липецк · Онлайн по всей России
+      </p>
+    </div>
+
+    <div class="footer">
+      © 2026 · Вячеслав · Сделано просто и с душой
+    </div>
+  </div>
+
+  <!-- 🪟 МОДАЛЬНЫЕ ОКНА -->
+  
+  <!-- Сайты -->
+  <div class="modal-overlay" id="modal-sites">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <h3>💻 Сайты и цифровые визитки</h3>
+      <p>Сделаю красивую страницу для вашего бизнеса. Клиенты смогут посмотреть услуги и сразу написать вам в MAX или Telegram.</p>
+      <p>Могу сделать <strong>сайт-каталог</strong> с товарами (если у вас магазин).</p>
+      <div class="price-line">от 6000 ₽</div>
+      <button class="modal-btn" onclick="closeModal()">Обсудить</button>
+    </div>
+  </div>
+
+  <!-- Документы -->
+  <div class="modal-overlay" id="modal-docs">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <h3>📄 Работа с документами</h3>
+      <p>Соберу все важные данные из кучи файлов Word и Excel в одну удобную таблицу.</p>
+      <p>Сделаю сводку по папке с договорами (стороны, суммы, сроки). Вытащу данные из PDF.</p>
+      <div class="price-line">от 500 ₽ / документ</div>
+      <button class="modal-btn" onclick="closeModal()">Обсудить</button>
+    </div>
+  </div>
+
+  <!-- Боты -->
+  <div class="modal-overlay" id="modal-bots">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <h3>🤖 Боты и автоматизация</h3>
+      <p>Создам Telegram-бота, который будет принимать заявки, записывать клиентов и напоминать им о визите.</p>
+      <p>Напишу скрипты, которые уберут рутину (сортировка файлов, автоматические рассылки).</p>
+      <div class="price-line">от 3000 ₽</div>
+      <button class="modal-btn" onclick="closeModal()">Обсудить</button>
+    </div>
+  </div>
+
+  <!-- Тексты -->
+  <div class="modal-overlay" id="modal-text">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <h3>📝 Работа с текстами</h3>
+      <p>Напишу продающие описания для ваших товаров на Авито, Озон или Wildberries.</p>
+      <p>Отредактирую текст, исправлю ошибки, сделаю краткую выжимку или перевод.</p>
+      <div class="price-line">от 500 ₽</div>
+      <button class="modal-btn" onclick="closeModal()">Обсудить</button>
+    </div>
+  </div>
+
+  <script>
+    // Открытие модального окна при клике на карточку
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', function() {
+        const modalId = this.getAttribute('data-modal');
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    // Закрытие модального окна
+    function closeModal() {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+      document.body.style.overflow = '';
+    }
+
+    // Закрытие по клику вне окна
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+      });
+    });
+
+    // Закрытие по Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+</body>
+</html>
