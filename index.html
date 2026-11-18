@@ -11,14 +11,14 @@
      Меняешь значение здесь — перекрашивается весь сайт.
      ============================================================ */
   :root{
-    --bg:#050510;          /* общий фон (как на визитках) */
-    --neon:#00f2fe;        /* главный неон */
+    --bg:#050510;          /* общий фон */
+    --neon:#00f2fe;        /* главный неон (бирюза) */
     --blue:#4facfe;        /* второй голубой */
     --trace:#1e3a8a;       /* дорожки платы */
     --ink:#e0e0e0;         /* основной текст */
     --muted:#b0b0c0;       /* приглушённый текст */
     --dim:#8aa0c0;         /* подписи */
-    --lava:#c96a45;        /* огненные слова на фоне (приглушённая лава) */
+    --lava:#ff6b35;        /* ОГНЕННЫЙ НЕОН для фона (лава) */
     --panel:rgba(255,255,255,.03);
     --line:rgba(0,242,254,.2);
   }
@@ -27,14 +27,14 @@
   html{scroll-behavior:smooth}
   body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:#fff;overflow-x:hidden;min-height:100vh}
 
-  /* Полоса прокрутки в стиле сайта */
+  /* Полоса прокрутки */
   html{scrollbar-color:rgba(0,242,254,.45) #0a0a1e; scrollbar-width:thin}
   ::-webkit-scrollbar{width:10px}
   ::-webkit-scrollbar-track{background:#0a0a1e}
   ::-webkit-scrollbar-thumb{background:linear-gradient(var(--neon),var(--blue));border-radius:8px;border:2px solid #0a0a1e}
   ::-webkit-scrollbar-thumb:hover{background:var(--neon)}
 
-  /* ===== СЛОЙ 0: ТЕХНО-ПЛАТА СО ЗМЕЙКАМИ (как была) ===== */
+  /* ===== СЛОЙ 0: ТЕХНО-ПЛАТА СО ЗМЕЙКАМИ ===== */
   .tech-bg{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.4}
   .tech-bg svg{width:100%;height:100%}
   .snake {stroke-dasharray:20 1000;animation:moveSnake 4s linear infinite}
@@ -42,16 +42,32 @@
   .snake3{stroke-dasharray:15 1000;animation:moveSnake 5s linear infinite}
   @keyframes moveSnake{0%{stroke-dashoffset:1000}100%{stroke-dashoffset:-1000}}
 
-  /* ===== СЛОЙ 1: СЛОВА НА ФОНЕ — проявляются по скроллу ===== */
+  /* ===== СЛОЙ 1: СЛОВА НА ФОНЕ — ОГНЕННЫЙ НЕОН (ЛАВА) ===== */
   .bg-words{position:fixed;inset:0;z-index:1;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1em}
-  .bg-words span{font-size:clamp(46px,11vw,116px);font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--lava);opacity:0;text-shadow:0 0 30px rgba(201,106,69,.4);animation:word linear both;animation-timeline:scroll(root)}
+  .bg-words span{
+    font-size:clamp(46px,11vw,116px);
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color: #c96a45; /* Глубокий цвет лавы */
+    /* МАГИЯ СВЕЧЕНИЯ */
+    text-shadow: 
+      0 0 10px rgba(201, 106, 69, 0.9),
+      0 0 25px rgba(255, 110, 50, 0.7),
+      0 0 50px rgba(255, 69, 0, 0.5);
+    opacity:0;
+    animation:word linear both;
+    animation-timeline:scroll(root);
+  }
   .bg-words span:nth-child(1){animation-name:w1}
   .bg-words span:nth-child(2){animation-name:w2}
   .bg-words span:nth-child(3){animation-name:w3}
-  @keyframes w1{0%,8%{opacity:0;transform:translateY(46px)}17%{opacity:.42;transform:translateY(0)}55%{opacity:.42;transform:translateY(-14px)}70%,100%{opacity:0;transform:translateY(-80px)}}
-  @keyframes w2{0%,15%{opacity:0;transform:translateY(46px)}24%{opacity:.42;transform:translateY(0)}55%{opacity:.42;transform:translateY(-14px)}70%,100%{opacity:0;transform:translateY(-80px)}}
-  @keyframes w3{0%,22%{opacity:0;transform:translateY(46px)}31%{opacity:.42;transform:translateY(0)}55%{opacity:.42;transform:translateY(-14px)}70%,100%{opacity:0;transform:translateY(-80px)}}
-  @supports not (animation-timeline: scroll()){.bg-words span{animation:none}}
+  
+  @keyframes w1{0%,8%{opacity:0;transform:translateY(46px)}17%{opacity:.9;transform:translateY(0)}55%{opacity:.9;transform:translateY(-14px)}70%,100%{opacity:0;transform:translateY(-80px)}}
+  @keyframes w2{0%,15%{opacity:0;transform:translateY(46px)}24%{opacity:.9;transform:translateY(0)}55%{opacity:.9;transform:translateY(-14px)}70%,100%{opacity:0;transform:translateY(-80px)}}
+  @keyframes w3{0%,22%{opacity:0;transform:translateY(46px)}31%{opacity:.9;transform:translateY(0)}55%{opacity:.9;transform:translateY(-14px)}70%,100%{opacity:0;transform:translateY(-80px)}}
+  
+  @supports not (animation-timeline: scroll()){.bg-words span{animation:none; opacity: 0.4;}}
 
   /* ===== СЛОЙ 2: КОНТЕНТ ===== */
   .container{max-width:1100px;margin:0 auto;padding:20px 20px 40px;position:relative;z-index:2}
@@ -80,9 +96,7 @@
 
   .sec-title{font-size:1.8rem;color:var(--neon);text-align:center;margin:44px 0 24px;font-weight:400}
 
-  /* ===== ШАГИ: ЗИГЗАГ + МЕДЛЕННЫЙ КАСКАД =====
-     1.4s — длительность выезда одного окна.
-     Задержки (.2 / .9 / 1.6 / 2.3) — паузы между окнами. Хочешь медленнее — увеличь обе цифры. */
+  /* Шаги */
   .steps{display:flex;flex-direction:column;gap:22px;margin:10px 0 30px}
   .step{width:min(520px,100%);background:rgba(255,255,255,.02);border:1px solid rgba(0,242,254,.15);border-radius:20px;padding:22px 26px;display:flex;gap:18px;align-items:center;opacity:0;transform:translateX(-70px);transition:opacity 1.4s ease,transform 1.4s ease}
   .step:nth-child(odd){align-self:flex-start}
@@ -105,7 +119,7 @@
   .accordion-body{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 20px;color:var(--muted);font-size:.95rem}
   .accordion-item.active .accordion-body{padding:0 20px 15px}
 
-  /* ===== КНОПКИ СВЯЗИ (как были) ===== */
+  /* Кнопки связи */
   .btn-wrap{text-align:center;margin:30px 0 36px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
   .btn-neon{display:inline-block;padding:16px 40px;background:transparent;color:var(--neon);border:2px solid var(--neon);border-radius:50px;font-weight:bold;font-size:1.1rem;text-decoration:none;text-transform:uppercase;letter-spacing:1px;transition:all .3s ease;cursor:pointer;box-shadow:0 0 10px rgba(0,242,254,.15), inset 0 0 10px rgba(0,242,254,.1)}
   .btn-neon:hover{background:var(--neon);color:#050510;box-shadow:0 0 30px var(--neon),0 0 60px var(--neon);transform:scale(1.05)}
@@ -120,7 +134,7 @@
 
   .footer{text-align:center;font-size:.8rem;color:#5d6a7a;margin-top:28px;border-top:1px solid rgba(255,255,255,.04);padding-top:24px}
 
-  /* ===== МОДАЛЬНЫЕ ОКНА (как были) ===== */
+  /* Модальные окна */
   .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,5,16,.85);backdrop-filter:blur(6px);z-index:1000;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity .3s ease}
   .modal-overlay.active{display:flex;opacity:1}
   .modal{background:linear-gradient(135deg,#0f1a2e,#141d2b);border:1px solid rgba(0,242,254,.4);border-radius:24px;padding:36px 32px;max-width:520px;width:100%;box-shadow:0 0 60px rgba(0,242,254,.2);position:relative;transform:scale(.9);transition:transform .3s ease;max-height:85vh;overflow-y:auto}
@@ -132,10 +146,6 @@
   .modal-close:hover{color:var(--neon);transform:scale(1.2)}
   .modal-btn{display:inline-block;margin-top:16px;padding:12px 32px;background:var(--neon);color:#050510;border-radius:40px;text-decoration:none;font-weight:600;transition:.2s;border:none;cursor:pointer;font-size:1rem;font-family:inherit}
   .modal-btn:hover{background:var(--blue);box-shadow:0 0 25px var(--neon)}
-
-  /* Подсказка-тост для кнопки MAX */
-  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:2000;background:linear-gradient(135deg,#0f1a2e,#141d2b);border:1px solid rgba(0,242,254,.4);color:var(--ink);padding:14px 22px;border-radius:14px;font-size:.9rem;max-width:min(92vw,480px);text-align:center;box-shadow:0 0 30px rgba(0,242,254,.2);opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
   @media (max-width:700px){ .step{align-self:center} }
   @media (max-width:600px){
@@ -195,7 +205,7 @@
   </svg>
 </div>
 
-<!-- СЛОЙ 1: слова на фоне -->
+<!-- СЛОЙ 1: слова на фоне (ОГНЕННЫЕ) -->
 <div class="bg-words" aria-hidden="true">
   <span>Лучше</span><span>любых</span><span>слов</span>
 </div>
@@ -224,7 +234,7 @@
 
   <div class="grid">
     <div class="card reveal" style="--d:0s" data-modal="modal-sites" tabindex="0" role="button">
-      <span class="emoji-big">💻</span><h3>Сайты и визитки</h3>
+      <span class="emoji-big"></span><h3>Сайты и визитки</h3>
       <p>Цифровые визитки с записью и сайты-каталоги для магазинов.</p>
     </div>
     <div class="card reveal" style="--d:.12s" data-modal="modal-docs" tabindex="0" role="button">
@@ -232,7 +242,7 @@
       <p>Сбор данных из Word/Excel в таблицы. Отчёты, договоры, PDF.</p>
     </div>
     <div class="card reveal" style="--d:.24s" data-modal="modal-bots" tabindex="0" role="button">
-      <span class="emoji-big">🤖</span><h3>Боты и автоматизация</h3>
+      <span class="emoji-big"></span><h3>Боты и автоматизация</h3>
       <p>Telegram-боты для записи. Скрипты для рутины и рассылок.</p>
     </div>
     <div class="card reveal" style="--d:.36s" data-modal="modal-text" tabindex="0" role="button">
@@ -267,9 +277,9 @@
 
   <!-- Кнопки связи -->
   <div class="btn-wrap reveal" id="contacts">
-    <a href="https://max.ru/u/f9LHodD0cOIy_ivC_FI9aOpMX7MqxtpWYAXf0v2bk41BxymESmlS_vR4sIg" class="btn-neon" target="_blank">📩 Написать в MAX</a>
+    <a href="https://max.ru/u/f9LHodD0cOIy_ivC_FI9aOpMX7MqxtpWYAXf0v2bk41BxymESmlS_vR4sIg" class="btn-neon" target="_blank"> Написать в MAX</a>
     <a href="tg://resolve?domain=skrip_48" class="btn-neon btn-tg" target="_blank">
-      <span class="l1">✈️ Написать в Telegram</span>
+      <span class="l1">️ Написать в Telegram</span>
       <span class="l2">(приложение)</span>
     </a>
   </div>
@@ -290,11 +300,9 @@
     
     <h3>💻 Сайты и цифровые визитки</h3>
     
-    <!-- Основное предложение -->
     <p>Сделаю красивую страницу для вашего бизнеса. Клиенты смогут посмотреть услуги и сразу написать вам.</p>
     <p>Могу сделать <strong>сайт-каталог</strong> с товарами/ценами (если у вас магазин).</p>
     
-    <!-- Блок цен (разделенный) -->
     <div style="background: rgba(0,242,254,0.05); padding: 12px; border-radius: 12px; margin: 16px 0; border: 1px solid rgba(0,242,254,0.15);">
       <p style="margin:0 0 8px 0; font-size: 0.95rem;">
         💎 <strong>Лендинг «Под ключ»:</strong> эффекты, анимации, адаптив.<br>
@@ -304,11 +312,8 @@
          <strong>Вариант «Эконом»:</strong> простая визитка без сложных эффектов.<br>
         <span style="font-weight: bold;">от 3000 ₽</span>
       </p>
-      <p style="margin: 8px 0 0 0; font-size: 0.8rem; color: #8aa0c0;">
-      </p>
     </div>
 
-    <!-- Допы и гарантии -->
     <p><strong>🎁 7 дней бесплатных правок:</strong> меняем текст, картинки, цвета — до полного утверждения.</p>
     <p><strong>📇 Дизайн визитки с QR-кодом:</strong> сделаю в стиле сайта. Вы просто печатаете тираж.<br>
        <span style="font-size: 0.9em; opacity: 0.8;">(+500 ₽ к заказу)</span>
@@ -318,48 +323,65 @@
     <button class="modal-btn">Обсудить</button>
   </div>
 </div>
+
 <div class="modal-overlay" id="modal-docs">
   <div class="modal">
     <button class="modal-close" aria-label="Закрыть">×</button>
     <h3>📄 Работа с документами</h3>
-    <p>Соберу все важные данные из кучи файлов Word и Excel в одну удобную таблицу.</p>
-    <p>Сделаю сводку по папке с договорами (стороны, суммы, сроки). Вытащу данные из PDF.</p>
-    <p>Рассмотрю другие варианты обработки документов — пишите, обсудим.</p>
+    <p>Устали разбирать кипы бумаг? Я превращу хаос в порядок.</p>
+    <p><strong>Что делаю:</strong></p>
+    <ul style="margin-left: 20px; margin-bottom: 12px; color: var(--muted);">
+      <li>Сведу данные из Word/Excel в одну таблицу.</li>
+      <li>Вытащу суммы, даты и имена из сканов договоров.</li>
+      <li>Сделаю сводный отчёт по папке с файлами.</li>
+      <li>Конвертирую PDF в редактируемый формат.</li>
+    </ul>
+    <p>Работаю конфиденциально. Ваши файлы никуда не уходят в интернет (использую локальные инструменты).</p>
     <div class="price-line">от 500 ₽ / документ</div>
     <button class="modal-btn">Обсудить</button>
   </div>
 </div>
+
 <div class="modal-overlay" id="modal-bots">
   <div class="modal">
     <button class="modal-close" aria-label="Закрыть">×</button>
-    <h3>🤖 Боты и автоматизация</h3>
-    <p>Создам Telegram-бота, который будет принимать заявки, записывать клиентов и напоминать им о визите.</p>
-    <p>Напишу скрипты, которые уберут рутину (сортировка файлов, автоматические рассылки).</p>
+    <h3> Боты и автоматизация</h3>
+    <p>Избавлю вас от рутины. Пусть роботы работают, пока вы отдыхаете.</p>
+    <p><strong>Предложения:</strong></p>
+    <ul style="margin-left: 20px; margin-bottom: 12px; color: var(--muted);">
+      <li><strong>Бот для записи:</strong> клиент выбирает услугу и время, вы получаете уведомление.</li>
+      <li><strong>Авто-ответчик:</strong> отвечает на частые вопросы (цена, адрес, режим работы) 24/7.</li>
+      <li><strong>Скрипты для ПК:</strong> авто-сортировка файлов, рассылки, напоминания.</li>
+    </ul>
+    <p>Настройка под ваши нужды. Работает стабильно и бесплатно для вас (на вашем оборудовании или моём сервере).</p>
     <div class="price-line">от 3000 ₽</div>
     <button class="modal-btn">Обсудить</button>
   </div>
 </div>
+
 <div class="modal-overlay" id="modal-text">
   <div class="modal">
     <button class="modal-close" aria-label="Закрыть">×</button>
     <h3>📝 Работа с текстами</h3>
-    <p>Напишу продающие описания для ваших товаров на Авито, Озон или Wildberries.</p>
-    <p>Отредактирую текст, исправлю ошибки, сделаю краткую выжимку или перевод.</p>
-    <p>Помощь в написании школьных и студенческих работ (эссе, сочинения, курсовые).</p>
+    <p>Слово может продать или отпугнуть. Я помогу сказать правильно.</p>
+    <p><strong>Услуги:</strong></p>
+    <ul style="margin-left: 20px; margin-bottom: 12px; color: var(--muted);">
+      <li><strong>Для Авито/WB:</strong> сочные описания товаров, которые выделяют среди конкурентов.</li>
+      <li><strong>Редактура:</strong> исправлю ошибки, уберу «воду», сделаю текст читаемым.</li>
+      <li><strong>Переводы:</strong> быстрый перевод инструкций или статей.</li>
+      <li><strong>Для учёбы:</strong> помощь в написании эссе, рефератов, курсовых (структура и смысл).</li>
+    </ul>
+    <p>Пишу живым языком, без канцеляризмов. Использую ИИ для скорости, но смысл проверяю лично.</p>
     <div class="price-line">от 500 ₽</div>
     <button class="modal-btn">Обсудить</button>
   </div>
 </div>
 
-<div class="toast" id="toast" role="status"></div>
-
-<noscript><style>.reveal,.step{opacity:1;transform:none}.accordion-body{max-height:none;padding-bottom:15px}</style></noscript>
-
 <script>
 (function(){
   'use strict';
 
-  /* --- Модальные окна: как в старой версии --- */
+  /* --- Модальные окна --- */
   function closeModal(){
     document.querySelectorAll('.modal-overlay').forEach(function(m){ m.classList.remove('active'); });
     document.body.style.overflow = '';
@@ -385,7 +407,7 @@
   });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
 
-  /* --- Аккордеон: как в старой версии --- */
+  /* --- Аккордеон --- */
   document.querySelectorAll('.accordion-header').forEach(function(header){
     header.addEventListener('click', function(){
       var item = header.parentElement, body = header.nextElementSibling;
@@ -400,7 +422,7 @@
     });
   });
 
-  /* --- Появление при скролле + каскад шагов --- */
+  /* --- Появление при скролле --- */
   if('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('visible'); io.unobserve(en.target); } });
@@ -408,48 +430,6 @@
     document.querySelectorAll('.reveal, .steps').forEach(function(el){ io.observe(el); });
   } else {
     document.querySelectorAll('.reveal, .steps').forEach(function(el){ el.classList.add('visible'); });
-  }
-
-  /* --- Слова на фоне: запасной вариант для старых браузеров --- */
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var words = [].slice.call(document.querySelectorAll('.bg-words span'));
-  if(reduce){
-    words.forEach(function(w){ w.style.animation='none'; w.style.opacity=.25; });
-  } else if(!(window.CSS && CSS.supports && CSS.supports('animation-timeline','scroll()'))){
-    var IN=[[8,17],[15,24],[22,31]], OUT=[55,70], ticking=false;
-    var upd=function(){
-      ticking=false;
-      var h=document.documentElement;
-      var p=(h.scrollTop||document.body.scrollTop)/Math.max(1,h.scrollHeight-h.clientHeight)*100;
-      words.forEach(function(w,i){
-        var a=IN[i][0], b=IN[i][1], o=0, y=46;
-        if(p>=a&&p<b){ var t=(p-a)/(b-a); o=.42*t; y=46*(1-t); }
-        else if(p>=b&&p<OUT[0]){ o=.42; y=-14*(p-b)/(OUT[0]-b); }
-        else if(p>=OUT[0]&&p<OUT[1]){ var t2=(p-OUT[0])/(OUT[1]-OUT[0]); o=.42*(1-t2); y=-14-66*t2; }
-        else if(p>=OUT[1]){ o=0; y=-80; }
-        w.style.animation='none'; w.style.opacity=o; w.style.transform='translateY('+y+'px)';
-      });
-    };
-    addEventListener('scroll', function(){ if(!ticking){ ticking=true; requestAnimationFrame(upd); } }, {passive:true});
-    addEventListener('resize', upd);
-    upd();
-  }
-
-  var maxBtn = document.getElementById('maxBtn');
-  var toastEl = document.getElementById('toast'), toastTimer = null;
-  function showToast(msg){
-    toastEl.textContent = msg; toastEl.classList.add('show');
-    clearTimeout(toastTimer); toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 4200);
-  }
-  if(maxBtn && maxBtn.dataset.maxPlaceholder){
-    maxBtn.addEventListener('click', function(e){
-      e.preventDefault();
-      var id = maxBtn.dataset.maxPlaceholder;
-      var done = function(){ showToast('ID MAX (' + id + ') скопирован. Открой MAX и найди себя — личная ссылка скоро подключится.'); };
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(id).then(done, function(){ showToast('ID MAX: ' + id); });
-      } else { showToast('ID MAX: ' + id); }
-    });
   }
 })();
 </script>
