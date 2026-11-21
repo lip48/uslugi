@@ -18,45 +18,29 @@
 </script>
 <style>
 :root{
-  --ac:#f5b352;          /* золото */
-  --ac2:#63d9ff;         /* лёд */
-  --ink:#eae6db;
-  --dim:rgba(234,230,219,.55);
-  --bg:#04060c;
-  --panel:rgba(9,13,22,.58);
+  --ac:#f5b352; --ac2:#63d9ff;
+  --ink:#eae6db; --dim:rgba(234,230,219,.55);
+  --bg:#04060c; --panel:rgba(9,13,22,.58);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 html{overflow:hidden}
-body{
-  background:var(--bg);color:var(--ink);
-  font-family:'Unbounded',system-ui,'Segoe UI',sans-serif;
-  height:100dvh;overflow:hidden;
-  -webkit-tap-highlight-color:transparent;
-}
+body{background:var(--bg);color:var(--ink);font-family:'Unbounded',system-ui,'Segoe UI',sans-serif;
+  height:100dvh;overflow:hidden;-webkit-tap-highlight-color:transparent}
 .hidden{display:none!important}
-
-/* сцена на весь экран */
 #stage{position:fixed;inset:0;z-index:0}
 #stage canvas{display:block;width:100%;height:100%}
-
-/* лёгкое затемнение по краям — чтобы текст читался */
 #shade{position:fixed;inset:0;z-index:1;pointer-events:none;
   background:radial-gradient(ellipse at 50% 45%,transparent 40%,rgba(4,6,12,.55) 100%)}
-
-/* заголовок */
 #masthead{position:fixed;top:calc(22px + env(safe-area-inset-top));left:24px;z-index:10;pointer-events:none;max-width:70vw;
   opacity:0;transform:translateY(-10px);transition:opacity 1.4s ease .3s,transform 1.4s ease .3s}
 body.ready #masthead{opacity:1;transform:none}
 #masthead .overline{font-size:9.5px;letter-spacing:.34em;color:var(--dim);text-transform:uppercase}
 #masthead h1{margin:8px 0 6px;font-family:'Marcellus',serif;font-weight:400;
-  font-size:clamp(28px,4.4vw,46px);letter-spacing:.30em;color:#f4efe2;
-  text-shadow:0 0 34px rgba(245,179,82,.4)}
+  font-size:clamp(28px,4.4vw,46px);letter-spacing:.30em;color:#f4efe2;text-shadow:0 0 34px rgba(245,179,82,.4)}
 #masthead .sub{font-size:clamp(10px,1.3vw,12.5px);letter-spacing:.24em;color:var(--dim)}
 #masthead .sub b{color:var(--ac);font-weight:600}
 #masthead .rule{width:130px;height:1px;margin-top:12px;background:linear-gradient(90deg,var(--ac),transparent)}
-
-/* кнопки справа сверху */
 #tools{position:fixed;top:calc(16px + env(safe-area-inset-top));right:16px;z-index:10;display:flex;gap:8px;
   opacity:0;transition:opacity 1.2s ease .8s}
 body.ready #tools{opacity:1}
@@ -69,15 +53,11 @@ body.ready #tools{opacity:1}
 .tool:active{transform:scale(.93)}
 .tool.on{color:var(--ac);border-color:rgba(245,179,82,.55)}
 .tool svg{width:18px;height:18px}
-
-/* подпись внизу */
 #foot{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom));z-index:10;
   text-align:center;pointer-events:none;opacity:0;transition:opacity 1.4s ease 1.1s}
 body.ready #foot{opacity:1}
 #foot .line{font-family:'Marcellus',serif;font-size:clamp(13px,2.4vw,17px);letter-spacing:.16em;color:rgba(234,230,219,.72)}
 #foot .tiny{margin-top:6px;font-size:9.5px;letter-spacing:.22em;color:rgba(190,205,230,.38);text-transform:uppercase}
-
-/* завеса загрузки */
 #veil{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;place-items:center;align-content:center;gap:18px;
   transition:opacity 1.1s ease,visibility 1.1s}
 #veil.gone{opacity:0;visibility:hidden}
@@ -90,14 +70,8 @@ body.ready #foot{opacity:1}
 #veilRetry{margin-top:4px;padding:10px 24px;border-radius:30px;border:1px solid rgba(245,179,82,.5);
   background:transparent;color:var(--ac);cursor:pointer;font-family:inherit;font-size:.85rem}
 #veilRetry:hover{background:rgba(245,179,82,.12)}
-
-@media (max-width:600px){
-  #masthead{left:18px;max-width:62vw}
-  #foot .line{letter-spacing:.1em}
-}
-@media (prefers-reduced-motion:reduce){
-  #veil .vring{animation:none}
-}
+@media (max-width:600px){#masthead{left:18px;max-width:62vw}#foot .line{letter-spacing:.1em}}
+@media (prefers-reduced-motion:reduce){#veil .vring{animation:none}}
 </style>
 </head>
 <body>
@@ -125,9 +99,7 @@ body.ready #foot{opacity:1}
   <div class="tiny">Демо · Вячеслав</div>
 </div>
 
-<!-- Музыка: положи рядом файл music.mp3 — кнопка появится сама.
-     Автозапуск со звуком браузеры запрещают, поэтому включается кнопкой. -->
-<audio id="music" src="music.mp3" loop preload="none"></audio>
+<audio id="music" loop preload="none"></audio>
 
 <div id="veil">
   <div class="vring"></div>
@@ -139,6 +111,9 @@ body.ready #foot{opacity:1}
 <noscript><div style="position:fixed;inset:0;background:#04060c;color:#eae6db;display:grid;place-items:center;z-index:200">Для этой страницы нужен JavaScript.</div></noscript>
 
 <script type="module">
+/* ============================================================
+   ШЕЙДЕРЫ: шум, окружение, частицы, ядро, кольца, фон, ореол
+============================================================ */
 const LIB = /* glsl */`
 vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
 vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
@@ -265,9 +240,7 @@ void finalize(vec3 wp, float sizeW, float alpha){
 
 /* фоновая версия: без реакции на курсор */
 const DISTURB = /* glsl */`
-vec3 disturb(vec3 wp, inout float glow){
-  return wp;
-}
+vec3 disturb(vec3 wp, inout float glow){ return wp; }
 `;
 
 const P_FRAG = /* glsl */`
@@ -301,8 +274,7 @@ float dispf(vec3 p){
     float rg=ridge(p*1.6+vec3(uTime*0.012,0.0,0.0));
     return (f*0.2+(rg-0.5)*0.16)*(0.85+uEnergy*0.3);
   }
-  float f=fbm3(p*0.8+vec3(0.0,uTime*0.02,0.0));
-  return (f*0.26)*(0.85+uEnergy*0.3);
+  return fbm3(p*0.8+vec3(0.0,uTime*0.02,0.0))*0.26*(0.85+uEnergy*0.3);
 }
 void main(){
   vec3 n=normalize(normal);
@@ -606,22 +578,44 @@ void main(){
 
 /* ============================================================
    ФОНОВАЯ СЦЕНА: ядро + 3 кольца + пыль + звёзды.
-   Без панели управления — всё крутится само.
+   Три уровня качества: HIGH (мощный ПК) / MID / LOW (телефон).
 ============================================================ */
-const TAU = Math.PI*2;
-const isCoarse = matchMedia('(pointer:coarse)').matches;
-const reduced  = matchMedia('(prefers-reduced-motion:reduce)').matches;
-const lowTier  = isCoarse || (navigator.hardwareConcurrency && navigator.hardwareConcurrency<=6) || (navigator.deviceMemory && navigator.deviceMemory<=4);
+const TAU=Math.PI*2;
+const isCoarse=matchMedia('(pointer:coarse)').matches;
+const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const cores=navigator.hardwareConcurrency||4;
+const mem=navigator.deviceMemory||4;
+
+/* определяем класс устройства */
+let TIER='high';
+if(isCoarse||cores<=4||mem<=4) TIER='low';
+else if(cores<=8||mem<=8) TIER='mid';
+
+/* уточняем по видеокарте, если браузер даёт имя */
+try{
+  const c=document.createElement('canvas');
+  const gl=c.getContext('webgl2')||c.getContext('webgl');
+  const ext=gl&&gl.getExtension('WEBGL_debug_renderer_info');
+  const name=ext?String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)):'';
+  if(/RTX|Radeon RX|Arc A|Apple M[1-9]|GTX 1[06-9]/i.test(name)) TIER='high';
+  else if(/Mali|Adreno [1-5]|PowerVR|Intel\(R\) HD|UHD Graphics 6/i.test(name)) TIER='low';
+  if(gl){const lose=gl.getExtension('WEBGL_lose_context');if(lose)lose.loseContext();}
+}catch(e){}
+
+const CFG={
+  high:{dust:52000,stream:4200,stars:20000,motes:4200,pr:2.0, floor:.85, sphere:[240,168], seg:300, detail:1, bloomRes:1},
+  mid: {dust:30000,stream:2600,stars:13000,motes:2400,pr:1.5, floor:.75, sphere:[180,126], seg:240, detail:1, bloomRes:1},
+  low: {dust:16000,stream:1400,stars:8000, motes:1200,pr:1.0, floor:.70, sphere:[128,90],  seg:180, detail:0, bloomRes:.5}
+}[TIER];
 
 const veil=document.getElementById('veil');
 const veilStatus=document.getElementById('veilStatus');
-const veilRetry=document.getElementById('veilRetry');
-veilRetry.addEventListener('click',()=>location.reload());
+document.getElementById('veilRetry').addEventListener('click',()=>location.reload());
 
 (async()=>{
 try{
-  const THREE = await import('three');
-  const [{EffectComposer},{RenderPass},{UnrealBloomPass},{ShaderPass},{FXAAShader}] = await Promise.all([
+  const THREE=await import('three');
+  const [{EffectComposer},{RenderPass},{UnrealBloomPass},{ShaderPass},{FXAAShader}]=await Promise.all([
     import('three/addons/postprocessing/EffectComposer.js'),
     import('three/addons/postprocessing/RenderPass.js'),
     import('three/addons/postprocessing/UnrealBloomPass.js'),
@@ -633,13 +627,12 @@ try{
   console.error(err);
   veilStatus.textContent='Не удалось загрузить сцену. Нужен интернет и браузер с WebGL2.';
   veilStatus.classList.add('err');
-  veilRetry.classList.remove('hidden');
+  document.getElementById('veilRetry').classList.remove('hidden');
 }
 })();
 
 function init(THREE,EffectComposer,RenderPass,UnrealBloomPass,ShaderPass,FXAAShader){
 
-/* --- рендерер --- */
 const renderer=new THREE.WebGLRenderer({antialias:false,alpha:false,stencil:false,powerPreference:'high-performance'});
 if(!renderer.capabilities.isWebGL2) throw new Error('WebGL2 required');
 renderer.toneMapping=THREE.NoToneMapping;
@@ -653,58 +646,51 @@ const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,.1,500);
 const TARGET=new THREE.Vector3(0,.1,0);
 
-/* --- качество: на телефоне заметно скромнее --- */
-const COUNT = lowTier
-  ? {dust:9000, stream:900, stars:5200, motes:700}
-  : {dust:34000,stream:2600,stars:14000,motes:2600};
-const basePR = Math.min(devicePixelRatio||1, lowTier?1.15:1.75);
-let scale = lowTier ? .72 : 1;
+const COUNT={dust:CFG.dust,stream:CFG.stream,stars:CFG.stars,motes:CFG.motes};
+const basePR=Math.min(devicePixelRatio||1,CFG.pr);
+let scale=1;
 const ENERGY=.62;
 
-/* --- seeded random --- */
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 const rng=mulberry32(0xC0FFEE ^ 20261112);
 const gauss=()=>{let u=0,v=0;while(u===0)u=rng();while(v===0)v=rng();return Math.sqrt(-2*Math.log(u))*Math.cos(TAU*v)};
 
-/* --- палитра: золото + лёд --- */
 const PAL={hot:'#ffedc2',mid:'#ff9a3a',deep:'#57150a',key:'#ffc773',fill:'#5cd7ff',a:'#ffb84d',b:'#63d9ff',nebA:'#8a5a20',nebB:'#1c4a66'};
 const TINTS=['#a8aec0','#c49a58','#8a90a4'];
 const shared={
   uTime:{value:0},uEnergy:{value:ENERGY},uRes:{value:0},
-  uPixelScale:{value:1000},uFocus:{value:26},uDetail:{value:lowTier?0:1},
+  uPixelScale:{value:1000},uFocus:{value:26},uDetail:{value:CFG.detail},
   uKeyColor:{value:new THREE.Color(PAL.key)},uFillColor:{value:new THREE.Color(PAL.fill)},
   uHotColor:{value:new THREE.Color(PAL.hot)},uMidColor:{value:new THREE.Color(PAL.mid)},uDeepColor:{value:new THREE.Color(PAL.deep)},
   uAccentA:{value:new THREE.Color(PAL.a)},uAccentB:{value:new THREE.Color(PAL.b)},
   uNebA:{value:new THREE.Color(PAL.nebA)},uNebB:{value:new THREE.Color(PAL.nebB)}
 };
 
-/* --- небо --- */
-const bg=new THREE.Mesh(new THREE.SphereGeometry(300,32,20),
+const bg=new THREE.Mesh(new THREE.SphereGeometry(300,48,32),
   new THREE.ShaderMaterial({uniforms:Object.assign({},shared),vertexShader:BG_V,fragmentShader:BG_F,side:THREE.BackSide,depthWrite:false}));
 bg.renderOrder=-5;bg.frustumCulled=false;scene.add(bg);
 
-/* --- ядро --- */
-const coreGeo=new THREE.SphereGeometry(4, lowTier?110:200, lowTier?76:140);
+const coreGeo=new THREE.SphereGeometry(4,CFG.sphere[0],CFG.sphere[1]);
 coreGeo.boundingSphere=new THREE.Sphere(new THREE.Vector3(),4.8);
 const core=new THREE.Mesh(coreGeo,new THREE.ShaderMaterial({uniforms:Object.assign({},shared),vertexShader:CORE_V,fragmentShader:CORE_F}));
 core.rotation.x=.1;scene.add(core);
 
 /* --- геометрия кольца: грани + рёбра + торцы --- */
-function buildRing(R,w,t,arcs,seg=260){
+function buildRing(R,w,t,arcs,seg){
   const pos=[],nor=[],uv=[],face=[],idx=[];
-  const ri=R-w/2, ro=R+w/2, h=t/2;
+  const ri=R-w/2,ro=R+w/2,h=t/2;
   function quad(a,b,c,d,n,u0,u1,v0,v1,f){
     const base=pos.length/3;
     [a,b,c,d].forEach(p=>{pos.push(p[0],p[1],p[2]);nor.push(n[0],n[1],n[2]);face.push(f);});
-    uv.push(u0,v0, u1,v0, u1,v1, u0,v1);
-    idx.push(base,base+1,base+2, base,base+2,base+3);
+    uv.push(u0,v0,u1,v0,u1,v1,u0,v1);
+    idx.push(base,base+1,base+2,base,base+2,base+3);
   }
   arcs.forEach(arc=>{
     const a0=arc[0],a1=arc[1];
     const n=Math.max(2,Math.round(seg*(a1-a0)/TAU));
     for(let i=0;i<n;i++){
-      const t0=a0+(a1-a0)*i/n, t1=a0+(a1-a0)*(i+1)/n;
-      const u0=t0/TAU, u1=t1/TAU;
+      const t0=a0+(a1-a0)*i/n,t1=a0+(a1-a0)*(i+1)/n;
+      const u0=t0/TAU,u1=t1/TAU;
       const c0=Math.cos(t0),s0=Math.sin(t0),c1=Math.cos(t1),s1=Math.sin(t1);
       const nm=[(c0+c1)*.5,0,(s0+s1)*.5];
       quad([c0*ri,h,s0*ri],[c1*ri,h,s1*ri],[c1*ro,h,s1*ro],[c0*ro,h,s0*ro],[0,1,0],u0,u1,0,1,1);
@@ -757,7 +743,7 @@ const seed4=(s,i)=>{s[i*4]=rng();s[i*4+1]=rng();s[i*4+2]=rng();s[i*4+3]=Math.pow
 const assembly=new THREE.Group();scene.add(assembly);
 const ringMeshes=[];
 RINGS.forEach((cfg,ri)=>{
-  const grp=new THREE.Group();grp.rotation.set(...cfg.tilt);assembly.add(grp);
+  const grp=new THREE.Group();grp.rotation.set(cfg.tilt[0],cfg.tilt[1],cfg.tilt[2]);assembly.add(grp);
   const mat=new THREE.ShaderMaterial({
     uniforms:Object.assign({},shared,{
       uTint:{value:new THREE.Color(TINTS[ri])},
@@ -765,7 +751,7 @@ RINGS.forEach((cfg,ri)=>{
     }),
     vertexShader:RING_V,fragmentShader:RING_F,side:THREE.DoubleSide
   });
-  const mesh=new THREE.Mesh(buildRing(cfg.R,cfg.w,cfg.t,cfg.arcs,lowTier?170:260),mat);
+  const mesh=new THREE.Mesh(buildRing(cfg.R,cfg.w,cfg.t,cfg.arcs,CFG.seg),mat);
   mesh.rotation.y=cfg.phase;grp.add(mesh);ringMeshes.push(mesh);
   const sm=pointsMat(STREAM_MAIN,{alpha:.95,ap:.45,bokeh:.35,minPx:.9,fog:.01,decl:STREAM_DECL,
     extra:{uSpeed:{value:cfg.speed*4+.12*cfg.flow},uPhase:{value:cfg.phase},uFlowDir:{value:cfg.flow}}});
@@ -776,7 +762,6 @@ RINGS.forEach((cfg,ri)=>{
   sp.renderOrder=3;grp.add(sp);
 });
 
-/* --- спиральный диск пыли --- */
 const disk=new THREE.Group();disk.rotation.set(.14,0,-.06);scene.add(disk);
 const dust=makePoints(COUNT.dust,(i,p,s)=>{
   let r,th,y;
@@ -786,7 +771,6 @@ const dust=makePoints(COUNT.dust,(i,p,s)=>{
 },pointsMat(DUST_MAIN,{alpha:.5,ap:.8,bokeh:.85,minPx:.8,fog:.012}));
 dust.renderOrder=2;disk.add(dust);
 
-/* --- дальние звёзды --- */
 const sky=new THREE.Group();scene.add(sky);
 const nb=new THREE.Vector3(.35,.85,.3).normalize();
 const stars=makePoints(COUNT.stars,(i,p,s)=>{
@@ -798,7 +782,6 @@ const stars=makePoints(COUNT.stars,(i,p,s)=>{
 },pointsMat(STAR_MAIN,{alpha:.95,ap:0,bokeh:0,minPx:1,fog:0}));
 stars.renderOrder=1;sky.add(stars);
 
-/* --- ближние размытые пылинки --- */
 const moteGrp=new THREE.Group();scene.add(moteGrp);
 const motes=makePoints(COUNT.motes,(i,p,s)=>{
   const z=rng()*2-1,ph=rng()*TAU,xy=Math.sqrt(1-z*z);
@@ -807,40 +790,65 @@ const motes=makePoints(COUNT.motes,(i,p,s)=>{
 },pointsMat(MOTE_MAIN,{alpha:.15,ap:1.5,bokeh:1,minPx:1,fog:.008}));
 motes.renderOrder=4;moteGrp.add(motes);
 
-/* --- ореол --- */
 const halo=new THREE.Mesh(new THREE.PlaneGeometry(34,34),new THREE.ShaderMaterial({
   uniforms:Object.assign({},shared),vertexShader:HALO_V,fragmentShader:HALO_F,
   transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
 halo.renderOrder=1;halo.frustumCulled=false;scene.add(halo);
 
-/* --- постобработка: свечение → цветокоррекция → сглаживание --- */
+/* ============================================================
+   ПОСТОБРАБОТКА.
+   Буферы строго чётного размера и явный тип текстуры —
+   иначе Bloom оставляет мигающие прямоугольники.
+============================================================ */
 const hdrOK=!!renderer.extensions.get('EXT_color_buffer_float');
-const composer=hdrOK?new EffectComposer(renderer)
-  :new EffectComposer(renderer,new THREE.WebGLRenderTarget(1,1,{type:THREE.UnsignedByteType}));
+const even=v=>Math.max(2,Math.round(v/2)*2);
+const RT_TYPE=hdrOK?THREE.HalfFloatType:THREE.UnsignedByteType;
+
+const startW=even(innerWidth*Math.min(devicePixelRatio||1,CFG.pr));
+const startH=even(innerHeight*Math.min(devicePixelRatio||1,CFG.pr));
+const baseTarget=new THREE.WebGLRenderTarget(startW,startH,{
+  type:RT_TYPE,format:THREE.RGBAFormat,
+  minFilter:THREE.LinearFilter,magFilter:THREE.LinearFilter,
+  depthBuffer:true,stencilBuffer:false
+});
+const composer=new EffectComposer(renderer,baseTarget);
+composer.setPixelRatio(1);
 composer.addPass(new RenderPass(scene,camera));
-const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),.8,.55,.72);
+
+const bloom=new UnrealBloomPass(new THREE.Vector2(startW,startH),.8,.55,.72);
+/* не даём пирамиде размытия уйти в вырожденные размеры */
+bloom.nMips=Math.max(3,Math.min(5,bloom.nMips||5));
 composer.addPass(bloom);
-GRADE.uniforms.uRes.value=new THREE.Vector2(1,1);
+
+GRADE.uniforms.uRes.value=new THREE.Vector2(startW,startH);
 const gradePass=new ShaderPass(GRADE);composer.addPass(gradePass);
 const fxaaPass=new ShaderPass(FXAAShader);composer.addPass(fxaaPass);
 
 function applySize(){
   const w=innerWidth,h=innerHeight,pr=basePR*scale;
-  renderer.setPixelRatio(pr);renderer.setSize(w,h,false);
-  composer.setPixelRatio(pr);composer.setSize(w,h);
-  fxaaPass.material.uniforms.resolution.value.set(1/(w*pr),1/(h*pr));
-  gradePass.uniforms.uRes.value.set(w*pr,h*pr);
-  shared.uPixelScale.value=(h*pr)*.5/Math.tan(THREE.MathUtils.degToRad(camera.fov*.5));
+  const bw=even(w*pr),bh=even(h*pr);
+
+  renderer.setPixelRatio(pr);
+  renderer.setSize(w,h,false);
+
+  /* все буферы композера пересоздаются в чётном размере */
+  composer.setPixelRatio(1);
+  composer.setSize(bw,bh);
+  bloom.setSize(even(bw*CFG.bloomRes),even(bh*CFG.bloomRes));
+
+  fxaaPass.material.uniforms.resolution.value.set(1/bw,1/bh);
+  gradePass.uniforms.uRes.value.set(bw,bh);
+  shared.uPixelScale.value=bh*.5/Math.tan(THREE.MathUtils.degToRad(camera.fov*.5));
   camera.aspect=w/h;camera.updateProjectionMatrix();
 }
 applySize();
 let rz=null;
 addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(applySize,150)});
 
-/* --- музыка: только по кнопке (браузеры запрещают автозапуск со звуком) --- */
+/* --- музыка --- */
 const music=document.getElementById('music');
 const btnMusic=document.getElementById('btnMusic');
-const mOn=document.getElementById('icMusicOn'), mOff=document.getElementById('icMusicOff');
+const mOn=document.getElementById('icMusicOn'),mOff=document.getElementById('icMusicOff');
 function setMusicUI(on){
   btnMusic.classList.toggle('on',on);
   btnMusic.setAttribute('aria-pressed',String(on));
@@ -853,18 +861,20 @@ btnMusic.addEventListener('click',()=>{
   if(music.paused){
     setMusicUI(true);
     const p=music.play();
-    if(p&&p.catch) p.catch(()=>setMusicUI(false));
-  } else { music.pause(); setMusicUI(false); }
+    if(p&&p.catch)p.catch(()=>setMusicUI(false));
+  }else{music.pause();setMusicUI(false);}
 });
 music.addEventListener('error',()=>btnMusic.classList.add('hidden'));
-/* нет файла музыки — кнопка прячется; есть — пробуем включить сразу */
-fetch('music.mp3',{method:'HEAD'}).then(r=>{
+/* трек лежит рядом со страницей; нет файла — кнопка спрячется */
+const TRACK='Warm Minor Pulse.mp3';
+fetch(encodeURI(TRACK),{method:'HEAD'}).then(r=>{
   if(!r.ok){btnMusic.classList.add('hidden');return;}
+  music.src=TRACK;
   const p=music.play();
-  if(p&&p.then) p.then(()=>setMusicUI(true)).catch(()=>setMusicUI(false));
+  if(p&&p.then)p.then(()=>setMusicUI(true)).catch(()=>setMusicUI(false));
 }).catch(()=>btnMusic.classList.add('hidden'));
 
-/* --- камера: медленный облёт --- */
+/* --- камера --- */
 const DEF_POS=new THREE.Vector3(9.2,6.8,23.5);
 const A0=Math.atan2(DEF_POS.x,DEF_POS.z);
 const R0=Math.hypot(DEF_POS.x,DEF_POS.z);
@@ -873,12 +883,12 @@ camera.lookAt(TARGET);
 let intro=reduced?1:0;
 const easeOut=x=>1-Math.pow(1-x,3);
 
-/* --- главный цикл --- */
+/* --- цикл --- */
 let last=performance.now(),simTime=0,ema=1/60,frames=0,lastAdj=performance.now(),ready=false,running=true,rafId=0;
 renderer.compile(scene,camera);
 
 function frame(now){
-  if(!running) return;
+  if(!running)return;
   rafId=requestAnimationFrame(frame);
   const rawDt=(now-last)/1000;last=now;
   const dt=Math.min(rawDt,.05);
@@ -899,12 +909,12 @@ function frame(now){
   if(intro<1){
     intro=Math.min(1,intro+dt/2.8);
     camera.position.copy(DEF_POS).multiplyScalar(1.5-0.5*easeOut(intro));
-  } else if(!reduced){
+  }else if(!reduced){
     const ot=Math.max(0,simTime-2.8);
     const osc=Math.min(1,ot/4);
     const a=A0+ot*.026;
     const rad=R0+Math.sin(ot*.05)*1.6*osc;
-    camera.position.set(Math.sin(a)*rad, DEF_POS.y+Math.sin(ot*.037)*1.5*osc, Math.cos(a)*rad);
+    camera.position.set(Math.sin(a)*rad,DEF_POS.y+Math.sin(ot*.037)*1.5*osc,Math.cos(a)*rad);
   }
   camera.lookAt(TARGET);
   shared.uFocus.value=camera.position.distanceTo(TARGET);
@@ -915,24 +925,23 @@ function frame(now){
 
   composer.render();
 
-  /* авто-качество: тормозит — снижаем разрешение */
-  if(rawDt<.25) ema+=(rawDt-ema)*.06;
+  /* мягкая адаптация: снижаем только при реальных тормозах */
+  if(rawDt<.25)ema+=(rawDt-ema)*.05;
   frames++;
-  if(now-lastAdj>1800&&frames>60){
-    if(ema>.030&&scale>.45){scale=Math.max(.45,scale*.85);applySize();}
-    else if(ema<.015&&scale<(lowTier?.85:1)){scale=Math.min(lowTier?.85:1,scale*1.1);applySize();}
+  if(now-lastAdj>2500&&frames>90){
+    if(ema>.034&&scale>CFG.floor){scale=Math.max(CFG.floor,scale*.9);applySize();}
+    else if(ema<.014&&scale<1){scale=Math.min(1,scale*1.06);applySize();}
     lastAdj=now;
   }
   if(!ready&&frames>=2){ready=true;veil.classList.add('gone');document.body.classList.add('ready');}
 }
 rafId=requestAnimationFrame(frame);
 
-/* не жжём батарею в скрытой вкладке */
 document.addEventListener('visibilitychange',()=>{
   if(document.hidden){
     running=false;cancelAnimationFrame(rafId);
     if(!music.paused){music.pause();setMusicUI(false);}
-  } else if(!running){
+  }else if(!running){
     running=true;last=performance.now();rafId=requestAnimationFrame(frame);
   }
 });
