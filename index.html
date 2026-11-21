@@ -30,6 +30,7 @@
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip}
   body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:#fff;overflow-x:hidden;overflow-x:clip;min-height:100vh}
+
   /* Полоса прокрутки */
   html{scrollbar-color:rgba(0,242,254,.45) #0a0a1e; scrollbar-width:thin}
   ::-webkit-scrollbar{width:10px}
@@ -83,21 +84,21 @@
 
   .hero{text-align:center;padding:30px 0 20px}
   .hero img{width:120px;height:120px;border-radius:20px;margin-bottom:10px;box-shadow:0 0 20px rgba(0,242,254,.2);object-fit:cover;background:#0a0a1e}
-  .hero h1{font-size:3rem;font-weight:400;color:var(--ink);margin-bottom:6px; font-family: 'Orbitron', sans-serif;} /* Новый шрифт */
+  .hero h1{font-size:3rem;font-weight:400;color:var(--ink);margin-bottom:6px; font-family: 'Orbitron', sans-serif;}
   .hero p{font-size:1.2rem;color:var(--muted);border-top:1px solid rgba(0,242,254,.2);display:inline-block;padding-top:12px;margin-bottom:10px}
   .hero-sub{font-size:1rem;color:var(--dim);margin-top:5px}
 
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin:40px 0 30px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:24px 20px 28px;backdrop-filter:blur(8px);transition:all .3s ease;text-align:center;cursor:pointer}
   .card:hover,.card:focus-visible{transform:translateY(-8px);border-color:var(--neon);box-shadow:0 0 30px rgba(0,242,254,.15);outline:none}
-  .card h3{font-size:1.4rem;font-weight:500;margin-bottom:8px;color:var(--neon); font-family: 'Orbitron', sans-serif;} /* Новый шрифт */
+  .card h3{font-size:1.4rem;font-weight:500;margin-bottom:8px;color:var(--neon); font-family: 'Orbitron', sans-serif;}
   .card p{color:#ccc;font-size:.95rem}
   .emoji-big{font-size:2.5rem;display:block;margin-bottom:12px}
 
   .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease var(--d,0s),transform .8s ease var(--d,0s)}
   .reveal.visible{opacity:1;transform:none}
 
-  .sec-title{font-size:1.8rem;color:var(--neon);text-align:center;margin:44px 0 24px;font-weight:400; font-family: 'Orbitron', sans-serif;} /* Новый шрифт */
+  .sec-title{font-size:1.8rem;color:var(--neon);text-align:center;margin:44px 0 24px;font-weight:400; font-family: 'Orbitron', sans-serif;}
 
   /* Шаги */
   .steps{display:flex;flex-direction:column;gap:22px;margin:10px 0 30px}
@@ -109,8 +110,8 @@
   .steps.visible .step:nth-child(2){transition-delay:.9s}
   .steps.visible .step:nth-child(3){transition-delay:1.6s}
   .steps.visible .step:nth-child(4){transition-delay:2.3s}
-  .step-num{font-size:2rem;font-weight:bold;color:var(--neon);opacity:.55;line-height:1;flex-shrink:0; font-family: 'Orbitron', sans-serif;} /* Новый шрифт */
-  .step h4{color:var(--neon);margin-bottom:5px;font-weight:500; font-family: 'Orbitron', sans-serif;} /* Новый шрифт */
+  .step-num{font-size:2rem;font-weight:bold;color:var(--neon);opacity:.55;line-height:1;flex-shrink:0; font-family: 'Orbitron', sans-serif;}
+  .step h4{color:var(--neon);margin-bottom:5px;font-weight:500; font-family: 'Orbitron', sans-serif;}
   .step p{font-size:.9rem;color:var(--muted)}
 
   .faq{margin:40px 0}
@@ -124,14 +125,14 @@
 
   /* Кнопки связи */
   .btn-wrap{text-align:center;margin:30px 0 36px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
-  .btn-neon{display:inline-block;padding:16px 40px;background:transparent;color:var(--neon);border:2px solid var(--neon);border-radius:50px;font-weight:bold;font-size:1.1rem;text-decoration:none;text-transform:uppercase;letter-spacing:1px;transition:all .3s ease;cursor:pointer;box-shadow:0 0 10px rgba(0,242,254,.15), inset 0 0 10px rgba(0,242,254,.1); font-family: 'Orbitron', sans-serif;} /* Новый шрифт */
+  .btn-neon{display:inline-block;padding:16px 40px;background:transparent;color:var(--neon);border:2px solid var(--neon);border-radius:50px;font-weight:bold;font-size:1.1rem;text-decoration:none;text-transform:uppercase;letter-spacing:1px;transition:all .3s ease;cursor:pointer;box-shadow:0 0 10px rgba(0,242,254,.15), inset 0 0 10px rgba(0,242,254,.1); font-family: 'Orbitron', sans-serif;}
   .btn-neon:hover{background:var(--neon);color:#050510;box-shadow:0 0 30px var(--neon),0 0 60px var(--neon);transform:scale(1.05)}
   .btn-tg{display:inline-flex;flex-direction:column;align-items:center;line-height:1.2;padding-top:10px;padding-bottom:10px}
   .btn-tg .l1{font-size:.9em}
   .btn-tg .l2{font-size:.7em;opacity:.8}
 
   .about{background:rgba(255,255,255,.02);backdrop-filter:blur(6px);border-radius:30px;padding:28px 32px;margin:36px 0 30px;border:1px solid rgba(0,242,254,.15)}
-  .about h2{font-size:1.8rem;font-weight:400;color:var(--neon);margin-bottom:6px; font-family: 'Orbitron', sans-serif;} /* Новый шрифт */
+  .about h2{font-size:1.8rem;font-weight:400;color:var(--neon);margin-bottom:6px; font-family: 'Orbitron', sans-serif;}
   .about p{color:var(--muted);max-width:780px;line-height:1.6}
   .about .geo{margin-top:8px;font-size:.95rem;color:#6a7f9a}
 
@@ -141,15 +142,15 @@
   .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,5,16,.85);backdrop-filter:blur(6px);z-index:1000;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity .3s ease}
   .modal-overlay.active{display:flex;opacity:1}
   .modal{
-    background: rgba(15, 26, 46, 0.65); /* Более прозрачный фон */
-    backdrop-filter: blur(15px); /* Сильное размытие фона за окном */
+    background: rgba(15, 26, 46, 0.65);
+    backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(0, 242, 254, 0.5); /* Яркая обводка */
+    border: 1px solid rgba(0, 242, 254, 0.5);
     border-radius: 24px;
     padding: 36px 32px;
     max-width: 520px;
     width: 100%;
-    box-shadow: 0 0 60px rgba(0, 242, 254, 0.2), inset 0 0 20px rgba(255, 255, 255, 0.05); /* Внутренний блик */
+    box-shadow: 0 0 60px rgba(0, 242, 254, 0.2), inset 0 0 20px rgba(255, 255, 255, 0.05);
     position: relative;
     transform: scale(.9);
     transition: transform .3s ease;
@@ -157,9 +158,9 @@
     overflow-y: auto;
   }
   .modal-overlay.active .modal{transform:scale(1)}
-  .modal h3{font-size:1.6rem;color:var(--neon);margin-bottom:16px;font-weight:500; font-family: 'Orbitron', sans-serif;} /* Новый шрифт */
+  .modal h3{font-size:1.6rem;color:var(--neon);margin-bottom:16px;font-weight:500; font-family: 'Orbitron', sans-serif;}
   .modal p{color:var(--muted);margin-bottom:12px;line-height:1.7;font-size:.95rem}
-  .modal .price-line{color:var(--neon);font-size:1.2rem;font-weight:600;margin:16px 0; font-family: 'Orbitron', sans-serif;} /* Новый шрифт */
+  .modal .price-line{color:var(--neon);font-size:1.2rem;font-weight:600;margin:16px 0; font-family: 'Orbitron', sans-serif;}
   .modal-close{position:absolute;top:16px;right:20px;background:transparent;border:none;color:var(--blue);font-size:2rem;cursor:pointer;line-height:1;transition:.2s}
   .modal-close:hover{color:var(--neon);transform:scale(1.2)}
   .modal-btn{display:inline-block;margin-top:16px;padding:12px 32px;background:var(--neon);color:#050510;border-radius:40px;text-decoration:none;font-weight:600;transition:.2s;border:none;cursor:pointer;font-size:1rem;font-family:inherit}
@@ -252,7 +253,7 @@
 
   <div class="grid">
     <div class="card reveal" style="--d:0s" data-modal="modal-sites" tabindex="0" role="button">
-      <span class="emoji-big"></span><h3>Сайты и визитки</h3>
+      <span class="emoji-big">💻</span><h3>Сайты и визитки</h3>
       <p>Цифровые визитки с записью и сайты-каталоги для магазинов.</p>
     </div>
     <div class="card reveal" style="--d:.12s" data-modal="modal-docs" tabindex="0" role="button">
@@ -260,7 +261,7 @@
       <p>Сбор данных из Word/Excel в таблицы. Отчёты, договоры, PDF.</p>
     </div>
     <div class="card reveal" style="--d:.24s" data-modal="modal-bots" tabindex="0" role="button">
-      <span class="emoji-big"></span><h3>Боты и автоматизация</h3>
+      <span class="emoji-big">🤖</span><h3>Боты и автоматизация</h3>
       <p>Telegram-боты для записи. Скрипты для рутины и рассылок.</p>
     </div>
     <div class="card reveal" style="--d:.36s" data-modal="modal-text" tabindex="0" role="button">
@@ -295,26 +296,29 @@
 
   <!-- Кнопки связи -->
   <div class="btn-wrap reveal" id="contacts">
-    <a href="https://max.ru/u/f9LHodD0cOIy_ivC_FI9aOpMX7MqxtpWYAXf0v2bk41BxymESmlS_vR4sIg" class="btn-neon" target="_blank"> Написать в MAX</a>
-    <a href="tg://resolve?domain=skrip_48" class="btn-neon btn-tg" target="_blank">
-      <span class="l1">️ Написать в Telegram</span>
+    <a href="https://max.ru/u/f9LHodD0cOIy_ivC_FI9aOpMX7MqxtpWYAXf0v2bk41BxymESmlS_vR4sIg" class="btn-neon" target="_blank" rel="noopener">📩 Написать в MAX</a>
+    <a href="tg://resolve?domain=skrip_48" class="btn-neon btn-tg" target="_blank" rel="noopener">
+      <span class="l1">✈️ Написать в Telegram</span>
       <span class="l2">(приложение)</span>
     </a>
   </div>
 
-  <!-- НОВЫЙ БЛОК: КНОПКА НА ДЕМО -->
-<div class="about reveal" style="text-align:center; padding: 40px 32px;">
-  <h2 style="margin-bottom: 16px;">Хочешь такой же праздник на своём сайте?</h2>
-  <p style="max-width: 600px; margin: 0 auto 24px; color: var(--muted);">
-    Я создал специальную демонстрационную страницу с новогодними эффектами: снег, 3D-буквы, гирлянды и даже юмористическая ярмарка. 
-    Посмотри, как это выглядит вживую!
-  </p>
-  <a href="demo.html" class="btn-neon" style="font-size: 1.2rem; padding: 18px 48px;">
-    ✨ Посмотреть новогоднюю магию
-  </a>
-  <p style="margin-top: 16px; font-size: 0.9rem; color: var(--dim);">
-    (Откроется в новой вкладке, снег гарантирован ❄️)
-  </p>
+  <!-- БЛОК: КНОПКА НА НОВОГОДНЕЕ ДЕМО -->
+  <div class="about reveal" style="text-align:center; padding: 40px 32px;">
+    <h2 style="margin-bottom: 16px;">Хочешь такой же праздник на своём сайте?</h2>
+    <p style="max-width: 600px; margin: 0 auto 24px; color: var(--muted);">
+      Я создал специальную демонстрационную страницу с новогодними эффектами: снег, 3D-буквы, гирлянды и даже юмористическая ярмарка. 
+      Посмотри, как это выглядит вживую!
+    </p>
+    <a href="demo.html" class="btn-neon" style="font-size: 1.2rem; padding: 18px 48px;">
+      ✨ Посмотреть новогоднюю магию
+    </a>
+    <p style="margin-top: 16px; font-size: 0.9rem; color: var(--dim);">
+      (Снег гарантирован ❄️ Обратно — кнопкой «На главную»)
+    </p>
+  </div>
+
+  <div class="footer">© 2026 · Вячеслав · Сделано просто и с душой</div>
 </div>
 
 <!-- Модальные окна -->
@@ -333,7 +337,7 @@
         <span style="color: var(--neon); font-weight: bold; font-size: 1.1rem;">от 5000 ₽</span>
       </p>
       <p style="margin:0; font-size: 0.9rem; opacity: 0.8;">
-         <strong>Вариант «Эконом»:</strong> простая визитка без сложных эффектов.<br>
+        💰 <strong>Вариант «Эконом»:</strong> простая визитка без сложных эффектов.<br>
         <span style="font-weight: bold;">от 3000 ₽</span>
       </p>
     </div>
@@ -369,7 +373,7 @@
 <div class="modal-overlay" id="modal-bots">
   <div class="modal">
     <button class="modal-close" aria-label="Закрыть">×</button>
-    <h3> Боты и автоматизация</h3>
+    <h3>🤖 Боты и автоматизация</h3>
     <p>Избавлю вас от рутины. Пусть роботы работают, пока вы отдыхаете.</p>
     <p><strong>Предложения:</strong></p>
     <ul style="margin-left: 20px; margin-bottom: 12px; color: var(--muted);">
