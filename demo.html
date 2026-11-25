@@ -752,14 +752,13 @@ var rzTimer=null;
 addEventListener('resize',function(){
   clearTimeout(rzTimer);
   rzTimer=setTimeout(function(){sizeSnow();layoutLetters()},150);
-});
-})();
+}); 
+})(); 
 <audio id="ny-music" loop>
   <source src="new_year_song.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-  // Музыка заиграет после первого клика по странице (требование браузеров)
   document.body.addEventListener('click', function() {
     var audio = document.getElementById('ny-music');
     if (audio.paused) {
