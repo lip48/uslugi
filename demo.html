@@ -754,14 +754,31 @@ addEventListener('resize',function(){
   rzTimer=setTimeout(function(){sizeSnow();layoutLetters()},150);
 });
 })();
-<audio id="ny-music" loop>
-  <source src="new_year_song.mp3" type="audio/mpeg">
-</audio>
+</script>
+
+<!-- МУЗЫКА -->
+<audio id="ny-music" src="new_year_song.mp3" loop preload="auto"></audio>
+<button id="ny-music-btn" type="button" aria-label="Музыка вкл/выкл"
+  style="position:fixed;right:14px;bottom:14px;z-index:9999;width:46px;height:46px;border-radius:50%;border:1px solid #00f2fe;background:rgba(5,5,16,.85);color:#00f2fe;font-size:20px;cursor:pointer;box-shadow:0 0 12px rgba(0,242,254,.5);">🔇</button>
 <script>
-  document.body.addEventListener('click', function() {
-    var audio = document.getElementById('ny-music');
-    if (audio.paused) audio.play();
-  }, { once: true });
+(function(){
+  var a=document.getElementById('ny-music'),b=document.getElementById('ny-music-btn'),off=false;
+  a.volume=0.35;
+  function ui(){b.textContent=a.paused?'🔇':'🔊';}
+  a.addEventListener('play',ui);a.addEventListener('pause',ui);
+  b.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(a.paused){off=false;a.play().catch(function(){});}else{off=true;a.pause();}
+  });
+  ['pointerdown','keydown','touchstart'].forEach(function(ev){
+    window.addEventListener(ev,function h(e){
+      if(e.target===b)return;
+      if(!off)a.play().catch(function(){});
+      window.removeEventListener(ev,h);
+    },true);
+  });
+  a.play().catch(function(){});ui();
+})();
 </script>
 </body>
 </html>
