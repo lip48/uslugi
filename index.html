@@ -35,7 +35,6 @@ body{
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
 }
-/* статичный фон: два свечения + едва заметная сетка — ноль нагрузки на телефон */
 body::before{
   content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:
@@ -46,7 +45,6 @@ body::before{
     repeating-linear-gradient(90deg, rgba(0,242,254,.022) 0 1px, transparent 1px 56px);
 }
 ::selection{background:rgba(0,242,254,.35);color:#fff}
-/* скроллбар в стиле сайта */
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-track{background:var(--bg2)}
 ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--neon),var(--violet));border-radius:8px;border:2px solid var(--bg2)}
@@ -60,7 +58,7 @@ section{scroll-margin-top:calc(var(--header-h) + 16px)}
 /* ============ ШАПКА ============ */
 .header{
   position:sticky;top:0;z-index:50;height:var(--header-h);
-  background:rgba(5,5,16,.94); /* без backdrop-blur — щадим старые телефоны */
+  background:rgba(5,5,16,.94);
   border-bottom:1px solid var(--line);
 }
 .header .wrap{height:100%;display:flex;align-items:center;gap:14px}
@@ -82,11 +80,13 @@ section{scroll-margin-top:calc(var(--header-h) + 16px)}
 .btn--primary:hover{filter:brightness(1.1);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,242,254,.45)}
 .btn--ghost{background:transparent;color:var(--violet);border-color:rgba(139,92,246,.55)}
 .btn--ghost:hover{background:rgba(139,92,246,.14);transform:translateY(-2px)}
+.btn--violet{background:linear-gradient(120deg,#7c3aed,#db2777);color:#fff;font-weight:800;box-shadow:0 4px 22px rgba(139,92,246,.45)}
+.btn--violet:hover{filter:brightness(1.12);transform:translateY(-2px);box-shadow:0 8px 28px rgba(219,39,119,.5)}
 .btn--small{padding:9px 16px;font-size:14px}
 .header .btn{margin-left:8px;white-space:nowrap}
 @media(max-width:860px){.nav{display:none}.header .btn{margin-left:auto}}
 
-/* ============ ПЕЧАТНАЯ МАШИНКА (вместо бегущей строки) ============ */
+/* ============ ПЕЧАТНАЯ МАШИНКА ============ */
 .ticker{
   border-bottom:1px solid var(--line);
   background:linear-gradient(90deg,rgba(0,242,254,.07),rgba(139,92,246,.07) 55%,rgba(255,77,157,.05));
@@ -142,7 +142,6 @@ section{scroll-margin-top:calc(var(--header-h) + 16px)}
 .card--docs{--acc:var(--green)}
 .card--bots{--acc:var(--violet)}
 .card--texts{--acc:var(--amber)}
-/* запасной вариант, если color-mix не поддерживается старым браузером */
 @supports not (background:color-mix(in srgb,red 10%,blue)){
   .card__icon{background:rgba(0,242,254,.12);border-color:var(--line)}
   .card:hover,.card:focus-visible{box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 18px rgba(0,242,254,.2)}
@@ -155,7 +154,7 @@ section{scroll-margin-top:calc(var(--header-h) + 16px)}
 .step__title{font-weight:700;font-size:16px;margin-bottom:6px}
 .step__text{color:var(--muted);font-size:14px}
 
-/* FAQ на нативных details — работает даже без JS */
+/* FAQ */
 .faq{display:flex;flex-direction:column;gap:12px;max-width:760px}
 .faq details{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .faq summary{list-style:none;cursor:pointer;padding:16px 52px 16px 20px;font-weight:600;font-size:15.5px;position:relative;transition:color .2s}
@@ -164,7 +163,7 @@ section{scroll-margin-top:calc(var(--header-h) + 16px)}
 .faq summary::after{content:"+";position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--neon);transition:transform .2s ease;font-weight:400}
 .faq details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
 .faq details[open] summary{color:var(--neon)}
-.faq__body{padding:0 20px 18px;color:var(--muted);font-size:14.5px;border-top:1px dashed rgba(0,242,254,.12);padding-top:14px;margin:0 0}
+.faq__body{padding:0 20px 18px;color:var(--muted);font-size:14.5px;border-top:1px dashed rgba(0,242,254,.12);padding-top:14px}
 
 /* контакты */
 .contacts{background:linear-gradient(160deg,var(--surface2),var(--surface));border:1px solid var(--line);border-radius:22px;padding:36px 28px;text-align:center}
@@ -173,12 +172,16 @@ section{scroll-margin-top:calc(var(--header-h) + 16px)}
 .contacts__row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .contacts__hint{margin-top:14px;font-size:12.5px;color:var(--muted)}
 
-/* новогодний баннер */
+/* витрины-баннеры */
 .demo-banner{
   position:relative;border-radius:22px;padding:38px 28px;text-align:center;overflow:hidden;
   border:1px solid transparent;
   background:linear-gradient(var(--surface),var(--surface)) padding-box,
              linear-gradient(120deg,var(--neon),var(--magenta) 55%,var(--amber)) border-box;
+}
+.demo-banner--techno{
+  background:linear-gradient(var(--surface),var(--surface)) padding-box,
+             linear-gradient(120deg,var(--violet),var(--blue) 45%,var(--magenta)) border-box;
 }
 .demo-banner h2{font-size:clamp(21px,4vw,30px);margin-bottom:10px}
 .demo-banner p{color:var(--muted);max-width:560px;margin:0 auto 22px}
@@ -188,7 +191,6 @@ section{scroll-margin-top:calc(var(--header-h) + 16px)}
 .flake--2{top:26px;right:8%;font-size:16px}
 .flake--3{bottom:16px;left:12%;font-size:15px}
 .flake--4{bottom:22px;right:14%}
-/* лёгкое «дыхание» огоньков — только на больших экранах и без reduced-motion */
 @media(min-width:900px) and (prefers-reduced-motion:no-preference){
   .flake{animation:twinkle 4.5s ease-in-out infinite}
   .flake--2{animation-delay:1.2s}.flake--3{animation-delay:2.1s}.flake--4{animation-delay:3s}
@@ -231,11 +233,11 @@ body.lock{overflow:hidden}
 .modal__price-big{font-size:19px;font-weight:800;color:var(--amber);margin:6px 0 16px}
 .modal .btn{width:100%}
 
-/* ============ ПОЯВЛЕНИЕ ПРИ СКРОЛЛЕ (безопасное) ============ */
+/* ============ ПОЯВЛЕНИЕ ПРИ СКРОЛЛЕ ============ */
 [data-reveal].pre{opacity:0;transform:translateY(16px)}
 [data-reveal].pre.in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease;transition-delay:calc(var(--i,0)*70ms)}
 
-/* ============ ДОСТУПНОСТЬ / REDUCED MOTION ============ */
+/* ============ REDUCED MOTION ============ */
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -285,6 +287,7 @@ body.lock{overflow:hidden}
       <div class="hero__actions">
         <a class="btn btn--primary" href="#uslugi">Смотреть услуги</a>
         <a class="btn btn--ghost" href="demo.html">❄️ Новогоднее демо</a>
+        <a class="btn btn--ghost" href="techno.html" title="Neon Core — лучше смотреть на ПК или современном телефоне">🐍 Техно-витрина</a>
       </div>
     </div>
   </section>
@@ -390,7 +393,7 @@ body.lock{overflow:hidden}
     </div>
   </section>
 
-  <!-- НОВОГОДНИЙ БАННЕР -->
+  <!-- НОВОГОДНЯЯ ВИТРИНА -->
   <section class="section">
     <div class="wrap">
       <div class="demo-banner" data-reveal>
@@ -402,6 +405,22 @@ body.lock{overflow:hidden}
         <p>Только для вас — Новогодняя ярмарка. Заходите, там тепло, весело и немного магии ✨</p>
         <a class="btn btn--primary" href="demo.html">✨ Посмотреть новогоднюю магию</a>
         <div class="demo-banner__note">(Снег гарантирован ❄️ Обратно — кнопкой «На главную»)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ТЕХНО-ВИТРИНА -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="demo-banner demo-banner--techno" data-reveal>
+        <span class="flake flake--1" aria-hidden="true">🪐</span>
+        <span class="flake flake--2" aria-hidden="true">✦</span>
+        <span class="flake flake--3" aria-hidden="true">⚡</span>
+        <span class="flake flake--4" aria-hidden="true">✦</span>
+        <h2>Хочешь сайт с характером?</h2>
+        <p>Neon Core — моя техно-витрина: живая планета из частиц, неоновые змейки и эффекты, которые запоминаются. Так может выглядеть и ваш проект.</p>
+        <a class="btn btn--violet" href="techno.html" title="Neon Core — лучше смотреть на ПК или современном телефоне">🐍 Открыть Neon Core</a>
+        <div class="demo-banner__note">(не для старых и слабых телефонов — лучше ПК или современный смартфон)</div>
       </div>
     </div>
   </section>
@@ -545,7 +564,7 @@ body.lock{overflow:hidden}
       });
     },{threshold:.12,rootMargin:"0px 0px -6% 0px"});
     items.forEach(function(n){n.classList.add("pre");io.observe(n);});
-  }catch(e){/* контент остаётся видимым при любой ошибке */}
+  }catch(e){}
 })();
 
 /* ============ МОДАЛКИ ============ */
